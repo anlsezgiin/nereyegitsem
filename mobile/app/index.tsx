@@ -1,15 +1,10 @@
-import { Text, View } from "react-native";
+import { SafeAreaView } from 'react-native';
+import PrivacyPolicyScreen from './screens/Profiles/PrivacyPolicyScreen';
 
-export default function Index() {
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Selam</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <PrivacyPolicyScreen />
+    </SafeAreaView>
   );
 }
