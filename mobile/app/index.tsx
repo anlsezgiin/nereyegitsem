@@ -1,10 +1,10 @@
 import { SafeAreaView } from 'react-native';
-import PrivacyPolicyScreen from './screens/Profiles/PrivacyPolicyScreen';
-
+import EditProfileScreen from './screens/Profiles/EditProfileScreen';
+import SettingsScreen from './screens/Profiles/SettingsScreen';
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <PrivacyPolicyScreen />
+      <SettingsScreen />
     </SafeAreaView>
   );
 }
