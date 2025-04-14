@@ -1,0 +1,159 @@
+[
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.FavouritesController",
+    "Method": "AddFavourite",
+    "RelativePath": "Favourites/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "favourite",
+        "Type": "NereyeGitsemAPI.Context.Favourite",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.FavouritesController",
+    "Method": "DeleteFavourite",
+    "RelativePath": "Favourites/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.FavouritesController",
+    "Method": "GetFavourites",
+    "RelativePath": "Favourites/list/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[NereyeGitsemAPI.Context.Favourite, NereyeGitsemAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.UserController",
+    "Method": "AddUser",
+    "RelativePath": "User/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "NereyeGitsemAPI.Context.User",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.UserController",
+    "Method": "DeleteUser",
+    "RelativePath": "User/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.UserController",
+    "Method": "GetUserById",
+    "RelativePath": "User/getById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "NereyeGitsemAPI.Context.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.UserController",
+    "Method": "GetUsers",
+    "RelativePath": "User/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[NereyeGitsemAPI.Context.User, NereyeGitsemAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NereyeGitsemAPI.Controllers.UserController",
+    "Method": "UpdateUser",
+    "RelativePath": "User/update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedUser",
+        "Type": "NereyeGitsemAPI.Context.User",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
