@@ -1,10 +1,14 @@
 import { SafeAreaView } from 'react-native';
-import EditProfileScreen from './screens/Profiles/EditProfileScreen';
-import SettingsScreen from './screens/Profiles/SettingsScreen';
+import LoginScreen from './screens/Landing/LoginScreen';
+import SetPassword from './screens/Landing/SetPasswordScreen';
+import SignUpScreen from './screens/Landing/SignUpScreen';
+import WelcomeScreen from './screens/Landing/WelcomeScreen';
+
+// test aşamasında, güncellenecek.
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <SettingsScreen />
+      <WelcomeScreen />
     </SafeAreaView>
   );
 }
