@@ -9,8 +9,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import colors from "~/src/config/colors";
-import typography from "~/src/config/typography";
+import colors from "../../../config/colors";
+import fonts from "../../../config/fonts";
 
 export default function EditProfileScreen() {
   return (
@@ -60,6 +60,7 @@ export default function EditProfileScreen() {
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
@@ -67,11 +68,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   headerText: {
-    fontSize: typography.fontSize["2xl"],
-    fontFamily: typography.fontFamily,
-    fontWeight: typography.fontWeight.bold,
+    fontSize: 24,
+    fontFamily: fonts.bold,
     textAlign: "center",
-    color: colors.primary,
+    color: colors.ngcolor,
     marginTop: 50,
     marginBottom: 20,
   },
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     bottom: 0,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.ngcolor,
     borderRadius: 10,
     padding: 4,
   },
@@ -98,9 +98,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily,
-    fontWeight: typography.fontWeight.medium,
+    fontSize: 16,
+    fontFamily: fonts.medium,
     color: colors.black,
     marginBottom: 6,
   },
@@ -109,21 +108,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily,
+    fontSize: 16,
+    fontFamily: fonts.regular,
     color: colors.black,
   },
   button: {
     marginTop: 24,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.ngcolor,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",
   },
   buttonText: {
     color: colors.white,
-    fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily,
-    fontWeight: typography.fontWeight.medium,
+    fontSize: 16,
+    fontFamily: fonts.medium,
   },
 });

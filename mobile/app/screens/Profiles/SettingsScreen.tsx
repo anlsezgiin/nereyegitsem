@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import colors from "~/src/config/colors";
-import typography from "~/src/config/typography";
+import colors from "../../../config/colors";
+import fonts from "../../../config/fonts";
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function SettingsScreen() {
       <Text style={styles.title}>Settings</Text>
 
       <TouchableOpacity style={styles.item}>
-        <Feather name="key" size={20} color={colors.primary} />
+        <Feather name="key" size={20} color={colors.ngcolor} />
         <Text style={styles.label}>Password Manager</Text>
         <Feather
           name="chevron-right"
@@ -34,10 +34,9 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
   title: {
-    fontSize: typography.fontSize["2xl"],
-    fontFamily: typography.fontFamily,
-    fontWeight: typography.fontWeight.bold,
-    color: colors.primary,
+    fontSize: 24,
+    fontFamily: fonts.bold,
+    color: colors.ngcolor,
     textAlign: "center",
     marginBottom: 30,
   },
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
   },
   label: {
     marginLeft: 12,
-    fontSize: typography.fontSize.base,
-    fontFamily: typography.fontFamily,
+    fontSize: 16,
+    fontFamily: fonts.regular,
   },
 });

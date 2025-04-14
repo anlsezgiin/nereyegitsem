@@ -1,15 +1,10 @@
-import { Text, View } from "react-native";
-
-export default function Index() {
+import { SafeAreaView } from 'react-native';
+import EditProfileScreen from './screens/Profiles/EditProfileScreen';
+import SettingsScreen from './screens/Profiles/SettingsScreen';
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Selam</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <SettingsScreen />
+    </SafeAreaView>
   );
 }
