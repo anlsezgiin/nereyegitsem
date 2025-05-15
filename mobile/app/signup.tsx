@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SignUpScreen() {
+export default function signup() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.headerRow}>
@@ -11,19 +11,19 @@ export default function SignUpScreen() {
       </View>
 
       <Label text="İsim Soyisim" />
-      <Input placeholder="example@example.com" />
+      <Input placeholder="example@example.com" secure={undefined} icon={undefined} />
 
       <Label text="Şifre" />
       <Input placeholder="****" secure icon />
 
       <Label text="Email" />
-      <Input placeholder="example@example.com" />
+      <Input placeholder="example@example.com" secure={undefined} icon={undefined} />
 
       <Label text="Telefon Numarası" />
-      <Input placeholder="example@example.com" />
+      <Input placeholder="example@example.com" secure={undefined} icon={undefined} />
 
       <Label text="Doğum Tarihi" />
-      <Input placeholder="DD / MM / YYYY" />
+      <Input placeholder="DD / MM / YYYY" secure={undefined} icon={undefined} />
 
       <Text style={styles.termsText}>
         By continuing, you agree to <Text style={styles.link}>Terms of Use and Privacy Policy.</Text>
@@ -46,11 +46,21 @@ export default function SignUpScreen() {
   );
 }
 
-const Label = ({ text }) => (
+interface LabelProps {
+  text: string;
+}
+
+const Label: React.FC<LabelProps> = ({ text }) => (
   <Text style={styles.label}>{text}</Text>
 );
 
-const Input = ({ placeholder, secure, icon }) => (
+interface InputProps {
+  placeholder: string;
+  secure?: boolean;
+  icon?: boolean;
+}
+
+const Input: React.FC<InputProps> = ({ placeholder, secure, icon }) => (
   <View style={styles.inputWrapper}>
     <TextInput
       placeholder={placeholder}

@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import colors from "../../../config/colors";
-import fonts from "../../../config/fonts";
+import colors from "../config/colors";
+import fonts from "../config/fonts";
 
 export default function SettingsScreen() {
   const router = useRouter();

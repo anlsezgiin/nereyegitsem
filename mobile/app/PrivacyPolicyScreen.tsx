@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import colors from '../../../config/colors';
-import fonts from '../../../config/fonts';
+import colors from '../config/colors';
+import fonts from '../config/fonts';
 
 const PrivacyPolicyScreen = () => {
   return (

@@ -8,8 +8,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import colors from "../../../config/colors";
-import fonts from "../../../config/fonts";
+import colors from "../config/colors";
+import fonts from "../config/fonts";
 
 export default function ProfileScreen() {
   return (

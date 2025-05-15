@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 // Update edilmesi gereken UI bileşenleri var
-const LoginScreen = () => {
+const login = () => {
   const [secureText, setSecureText] = useState(true);
 
   return (
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default login;

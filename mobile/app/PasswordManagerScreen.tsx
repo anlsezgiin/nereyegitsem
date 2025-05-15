@@ -1,9 +1,9 @@
 // app/screens/Profile/PasswordManagerScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import PasswordInput from '../../components/PasswordInput';
-import colors from '../../../config/colors';
-import fonts from '../../../config/fonts';
+import PasswordInput from './components/PasswordInput';
+import colors from '../config/colors';
+import fonts from '../config/fonts';
 
 const PasswordManagerScreen = () => {
   const [currentPassword, setCurrentPassword] = useState('');
