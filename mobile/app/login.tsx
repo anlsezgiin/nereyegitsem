@@ -6,173 +6,205 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from 'react-native';
 
 // Update edilmesi gereken UI bileşenleri var
 const login = () => {
   const [secureText, setSecureText] = useState(true);
+  const [textInput1, setTextInput1] = useState('');
+
+  const onChangeTextInput1 = (text: string) => {
+	setTextInput1(text);
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.statusBar} />
-      <Text style={styles.time}>16:04</Text>
-
-      <Text style={styles.pageTitle}>Giriş Yap</Text>
-      <Text style={styles.welcome}>Hoşgeldiniz</Text>
-      <Text style={styles.desc}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </Text>
-
-      <Text style={styles.label}>Email veya Telefon Numarası</Text>
-      <View style={styles.inputBox}>
-        <TextInput style={styles.input} placeholder="example@example.com" placeholderTextColor="#999" />
-      </View>
-
-      <Text style={[styles.label, { marginTop: 20 }]}>Şifre</Text>
-      <View style={styles.inputBox}>
-        <TextInput
-          style={styles.input}
-          placeholder="*****"
-          placeholderTextColor="#999"
-          secureTextEntry={secureText}
-        />
-        <TouchableOpacity onPress={() => setSecureText(!secureText)}>
-          <Text style={styles.eyeIcon}>👁️</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.forgotPassword}>Şifremi Unuttum</Text>
-
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginText}>Giriş Yap</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.or}>veya şununla devam et</Text>
-
-      <View style={styles.googleBox}>
-        <Text style={styles.googleIcon}>G</Text>
-      </View>
-
-      <Text style={styles.signupLink}>
-        Hesabın mı yok? <Text style={styles.signupText}>Kayıt Ol</Text>
-      </Text>
-    </View>
+    <ScrollView  
+	style={{
+		backgroundColor: "#FFFFFF",
+		borderRadius: 30,
+	}}>
+	<View 
+		style={{
+			flexDirection: "row",
+			alignItems: "center",
+			marginTop: 63,
+			marginBottom: 34,
+			marginLeft: 29,
+		}}>
+		<Image
+			source = {{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/lscbpn2y_expires_30_days.png"}} 
+			resizeMode = {"stretch"}
+			style={{
+				borderRadius: 30,
+				width: 8,
+				height: 13,
+				marginRight: 81,
+			}}
+		/>
+		<View 
+			style={{
+				width: 16,
+			}}>
+		</View>
+		<Text 
+			style={{
+				color: "#4D55CC",
+				fontSize: 24,
+				fontWeight: "bold",
+			}}>
+			{"Giriş Yap"}
+		</Text>
+	</View>
+	<Text 
+		style={{
+			color: "#4D55CC",
+			fontSize: 24,
+			fontWeight: "bold",
+			marginBottom: 12,
+			marginLeft: 30,
+		}}>
+		{"Hoşgeldiniz"}
+	</Text>
+	<Text 
+		style={{
+			color: "#070707",
+			fontSize: 12,
+			marginBottom: 47,
+			marginHorizontal: 30,
+		}}>
+		{"Lütfen şifrenizi kimseyle paylaşmayınız agziniza sicarim hani bi noktada diye biliyosun sus"}
+	</Text>
+	<Text 
+		style={{
+			color: "#000000",
+			fontSize: 20,
+			fontWeight: "bold",
+			marginBottom: 12,
+			marginLeft: 30,
+		}}>
+		{"Email veya Telefon Numarası"}
+	</Text>
+	<TextInput
+		placeholder={"example@example.com"}
+		value={textInput1}
+		onChangeText={onChangeTextInput1}
+		style={{
+			color: "#7F9BFF",
+			fontSize: 20,
+			marginBottom: 20,
+			marginHorizontal: 30,
+			backgroundColor: "#ECF1FF",
+			borderRadius: 13,
+			paddingVertical: 15,
+			paddingLeft: 13,
+			paddingRight: 26,
+		}}
+	/>
+	<Text 
+		style={{
+			color: "#000000",
+			fontSize: 20,
+			fontWeight: "bold",
+			marginBottom: 12,
+			marginLeft: 30,
+		}}>
+		{"Şifre"}
+	</Text>
+	<TouchableOpacity 
+		style={{
+			flexDirection: "row",
+			alignItems: "center",
+			backgroundColor: "#ECF1FF",
+			borderRadius: 13,
+			paddingVertical: 14,
+			paddingHorizontal: 12,
+			marginBottom: 9,
+			marginHorizontal: 30,
+		}} onPress={()=>alert('Pressed!')}>
+		<Text 
+			style={{
+				color: "#7F9BFF",
+				fontSize: 20,
+				flex: 1,
+			}}>
+			{"*****"}
+		</Text>
+		<Image
+			source = {{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/5sm3hzpt_expires_30_days.png"}} 
+			resizeMode = {"stretch"}
+			style={{
+				borderRadius: 30,
+				width: 20,
+				height: 16,
+			}}
+		/>
+	</TouchableOpacity>
+	<Text 
+		style={{
+			color: "#4D55CC",
+			fontSize: 12,
+			fontWeight: "bold",
+			marginBottom: 36,
+			marginLeft: 137,
+		}}>
+		{"Şifremi Unuttum"}
+	</Text>
+	<View 
+		style={{
+			alignItems: "center",
+			marginBottom: 204,
+			marginHorizontal: 46,
+		}}>
+		<View 
+			style={{
+				backgroundColor: "#4D55CC",
+				borderRadius: 30,
+				paddingVertical: 16,
+				marginBottom: 16,
+				marginHorizontal: 36,
+			}}>
+			<Text 
+				style={{
+					color: "#FFFFFF",
+					fontSize: 24,
+					fontWeight: "bold",
+					textAlign: "center",
+					marginHorizontal: 23,
+				}}>
+				{"Giriş Yap"}
+			</Text>
+		</View>
+		<Text 
+			style={{
+				color: "#070707",
+				fontSize: 12,
+				textAlign: "center",
+				marginBottom: 16,
+				marginHorizontal: 3,
+			}}>
+			{"veya şununla devam et"}
+		</Text>
+		<Image
+			source = {{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/mmt9q95w_expires_30_days.png"}} 
+			resizeMode = {"stretch"}
+			style={{
+				width: 40,
+				height: 40,
+				marginBottom: 16,
+			}}
+		/>
+		<Text 
+			style={{
+				color: "#070707",
+				fontSize: 12,
+				textAlign: "center",
+			}}>
+			{"Hesabın mı yok? Kayıt Ol"}
+		</Text>
+	</View>
+</ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 30,
-    paddingTop: 40,
-  },
-  statusBar: {
-    width: '100%',
-    height: 28,
-    backgroundColor: '#E2EAFF',
-    position: 'absolute',
-    top: 0,
-  },
-  time: {
-    position: 'absolute',
-    top: 9,
-    left: 27,
-    fontSize: 13,
-    fontWeight: '500',
-    fontFamily: 'League Spartan',
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#4D55CC',
-    textAlign: 'center',
-    marginTop: 63,
-  },
-  welcome: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#4D55CC',
-    marginTop: 48,
-  },
-  desc: {
-    fontSize: 12,
-    color: '#000',
-    fontWeight: '300',
-    width: 299,
-    marginTop: 5,
-  },
-  label: {
-    marginTop: 30,
-    fontSize: 20,
-    fontWeight: '500',
-  },
-  inputBox: {
-    backgroundColor: '#ECF1FF',
-    height: 45,
-    borderRadius: 13,
-    paddingHorizontal: 10,
-    marginTop: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-  },
-  eyeIcon: {
-    fontSize: 16,
-  },
-  forgotPassword: {
-    color: '#4D55CC',
-    fontSize: 12,
-    fontWeight: '500',
-    alignSelf: 'flex-end',
-    marginTop: 10,
-  },
-  loginButton: {
-    backgroundColor: '#4D55CC',
-    borderRadius: 30,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  loginText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: '500',
-  },
-  or: {
-    textAlign: 'center',
-    color: '#999',
-    marginTop: 15,
-  },
-  googleBox: {
-    borderWidth: 2,
-    borderColor: '#4D55CC',
-    borderRadius: 100,
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 10,
-  },
-  googleIcon: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  signupLink: {
-    textAlign: 'center',
-    marginTop: 15,
-  },
-  signupText: {
-    color: '#4D55CC',
-    fontWeight: '500',
-  },
-});
-
-export default login;
+export default login

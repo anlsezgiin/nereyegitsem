@@ -115,4 +115,4 @@ import SettingsScreen from "./SettingsScreen";
 import signup from "./signup";
 
 
-export default signup;
+export default mekanSonuc;
