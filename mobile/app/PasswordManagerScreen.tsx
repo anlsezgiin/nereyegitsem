@@ -18,7 +18,7 @@ const PasswordManagerScreen = () => {
       <PasswordInput value={currentPassword} onChangeText={setCurrentPassword} />
 
       <TouchableOpacity>
-        <Text style={styles.forgot}>Forgot Password?</Text>
+        <Text style={styles.forgot}>Şifremi Unuttum</Text>
       </TouchableOpacity>
 
       <Text style={styles.label}>Yeni Şifre</Text>

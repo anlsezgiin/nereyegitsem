@@ -1,11 +1,11 @@
 import React from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
-interface MekanIsmiProps {
+interface PlaceInfo {
 	// Define the expected properties here, for example:
 	// title: string;
 }
 
-export default (props: MekanIsmiProps) => {
+export default (props: PlaceInfo) => {
 	return (
 		<SafeAreaView 
 			style={{
