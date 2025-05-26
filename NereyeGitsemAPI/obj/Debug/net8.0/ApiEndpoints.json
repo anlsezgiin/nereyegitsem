@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "NereyeGitsemAPI.Controllers.AIController",
+    "Method": "Ask",
+    "RelativePath": "AI/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NereyeGitsemAPI.Models.AIRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NereyeGitsemAPI.Controllers.FavouritesController",
     "Method": "AddFavourite",
     "RelativePath": "Favourites/add",

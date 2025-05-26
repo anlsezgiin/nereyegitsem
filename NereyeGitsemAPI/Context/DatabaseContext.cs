@@ -17,16 +17,25 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<Favourite> Favourites { get; set; }
 
+    public virtual DbSet<Request> Requests { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=192.168.1.103;Database=nereyeGitsem;User Id=myuser;Password=bitirmeprojesi123;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=192.168.5.79;Database=nereyeGitsem;User Id=myuser;Password=bitirmeprojesi123;MultipleActiveResultSets=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Favourite>(entity =>
         {
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Request>(entity =>
+        {
+            entity.ToTable("Request");
+
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
         });
 
