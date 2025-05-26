@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -15,17 +17,47 @@ const LoginScreen = () => {
   const [secureText, setSecureText] = useState(true);
   const [textInput1, setTextInput1] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // MOCK API GÜNCELLENECEK!!!
+  const fakeLoginApi = async () => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve({ status: 200 }), 300)
+    );
+  };
+
+  const handleLogin = async () => {
+    if (!textInput1 || !password) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+      return;
+    }
+
+    setLoading(true);
+
+    const response: any = await fakeLoginApi();
+    setLoading(false);
+
+    if (response.status === 200) {
+      router.push('/home');
+    } else {
+      Alert.alert('Giriş Başarısız', 'Lütfen bilgilerinizi kontrol edin.');
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    console.log('Google login tıklandı');
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* HEADER */}
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.replace('/')}>
           <Ionicons name="chevron-back" size={24} color="#4D55CC" />
         </TouchableOpacity>
-        <View style={styles.headerSpacer} />
         <Text style={styles.headerTitle}>Giriş Yap</Text>
+        <View style={{ width: 24 }} />
       </View>
 
       <Text style={styles.welcome}>Hoşgeldiniz</Text>
@@ -43,12 +75,10 @@ const LoginScreen = () => {
       />
 
       <Text style={styles.label}>Şifre</Text>
-
-      {/* ŞİFRE GİRİŞİ */}
       <View style={styles.passwordBox}>
         <TextInput
           style={styles.passwordText}
-          placeholder="*****"
+          placeholder="********"
           placeholderTextColor="#7F9BFF"
           secureTextEntry={secureText}
           value={password}
@@ -63,26 +93,44 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.forgot}>Şifremi Unuttum</Text>
+      <TouchableOpacity onPress={() => router.push('/SetPasswordScreen')}>
+        <Text style={styles.forgot}>Şifremi Unuttum</Text>
+      </TouchableOpacity>
 
       <View style={styles.footer}>
-        <View style={styles.loginButton}>
-          <Text style={styles.loginText}>Giriş Yap</Text>
-        </View>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFF" />
+          ) : (
+            <Text style={styles.loginText}>Giriş Yap</Text>
+          )}
+        </TouchableOpacity>
 
         <Text style={styles.or}>veya şununla devam et</Text>
 
-        <Image
-          source={{
-            uri: 'https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/mmt9q95w_expires_30_days.png',
-          }}
-          resizeMode="stretch"
-          style={styles.googleIcon}
-        />
+        <TouchableOpacity onPress={handleGoogleLogin}>
+          <Image
+            source={{
+              uri: 'https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/mmt9q95w_expires_30_days.png',
+            }}
+            resizeMode="stretch"
+            style={styles.googleIcon}
+          />
+        </TouchableOpacity>
 
-        <Text style={styles.registerPrompt}>
-          Hesabın mı yok? <Text style={styles.registerLink}>Kayıt Ol</Text>
-        </Text>
+        <View style={styles.registerRow}>
+          <Text style={styles.registerPrompt}>Hesabın mı yok? </Text>
+          <Text
+            style={styles.registerLink}
+            onPress={() => router.push('/signup')}
+          >
+            Kayıt Ol
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -94,29 +142,26 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     borderRadius: 30,
+    flexGrow: 1,
+    paddingBottom: 40,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 63,
     marginBottom: 34,
-    marginLeft: 29,
-  },
-  headerSpacer: {
-    width: 16,
+    marginHorizontal: 29,
   },
   headerTitle: {
     color: '#4D55CC',
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    position: 'absolute',
-    left: 0,
-    right: 0,
     textAlign: 'center',
   },
   welcome: {
     color: '#4D55CC',
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 12,
     marginLeft: 30,
@@ -124,86 +169,89 @@ const styles = StyleSheet.create({
   subText: {
     color: '#070707',
     fontSize: 12,
-    marginBottom: 47,
+    marginBottom: 40,
     marginHorizontal: 30,
   },
   label: {
     color: '#000000',
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 12,
+    marginBottom: 10,
     marginLeft: 30,
   },
   input: {
     color: '#7F9BFF',
-    fontSize: 20,
+    fontSize: 16,
+    height: 50,
     marginBottom: 20,
     marginHorizontal: 30,
     backgroundColor: '#ECF1FF',
     borderRadius: 13,
-    paddingVertical: 15,
-    paddingLeft: 13,
-    paddingRight: 26,
+    paddingHorizontal: 13,
   },
   passwordBox: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#ECF1FF',
     borderRadius: 13,
-    paddingVertical: 15, // eşitlik için güncellendi
     paddingHorizontal: 13,
-    marginBottom: 9,
+    height: 50,
+    marginBottom: 10,
     marginHorizontal: 30,
   },
   passwordText: {
     color: '#7F9BFF',
-    fontSize: 20,
+    fontSize: 16,
     flex: 1,
   },
   forgot: {
     color: '#4D55CC',
     fontSize: 12,
     fontWeight: 'bold',
+    textAlign: 'right',
+    marginRight: 30,
     marginBottom: 36,
-    marginLeft: 137,
   },
   footer: {
     alignItems: 'center',
-    marginBottom: 204,
     marginHorizontal: 46,
   },
   loginButton: {
     backgroundColor: '#4D55CC',
     borderRadius: 30,
-    paddingVertical: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
     marginBottom: 16,
-    marginHorizontal: 36,
+    minWidth: 180,
+    alignItems: 'center',
   },
   loginText: {
     color: '#FFFFFF',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginHorizontal: 23,
   },
   or: {
     color: '#070707',
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 16,
-    marginHorizontal: 3,
   },
   googleIcon: {
     width: 40,
     height: 40,
     marginBottom: 16,
   },
+  registerRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
   registerPrompt: {
     color: '#070707',
     fontSize: 12,
-    textAlign: 'center',
   },
   registerLink: {
     color: '#4D55CC',
+    fontSize: 12,
   },
 });

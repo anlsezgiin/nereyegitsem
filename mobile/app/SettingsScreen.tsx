@@ -12,9 +12,26 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Settings</Text>
 
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => router.push("/PasswordManagerScreen")}
+      >
         <Feather name="key" size={20} color={colors.ngcolor} />
         <Text style={styles.label}>Password Manager</Text>
+        <Feather
+          name="chevron-right"
+          size={20}
+          color="#ccc"
+          style={{ marginLeft: "auto" }}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => router.push("/PrivacyPolicyScreen")}
+      >
+        <Feather name="shield" size={20} color={colors.ngcolor} />
+        <Text style={styles.label}>Gizlilik Sözleşmesi</Text>
         <Feather
           name="chevron-right"
           size={20}

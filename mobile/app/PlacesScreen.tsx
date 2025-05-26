@@ -5,6 +5,7 @@ import PlaceCard from "./components/PlaceCard";
 import { Place } from "./components/PlaceCard";
 
 
+// Data API'den gelicek yani bu kısım güncellenecek
 const mockData: Place[] = [
   {
     name: "Bluewater Cafe",

@@ -1,53 +1,68 @@
-// app/screens/Profile/PrivacyPolicyScreen.tsx
-
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import colors from '../config/colors';
 import fonts from '../config/fonts';
 
 const PrivacyPolicyScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color={colors.ngcolor} />
+      </TouchableOpacity>
+
       <Text style={styles.title}>Gizlilik Sözleşmesi</Text>
-      <Text style={styles.lastUpdate}>Last Update: 14/08/2024</Text>
+      <Text style={styles.lastUpdate}>Son Güncelleme: 16 Mayıs 2025</Text>
 
       <Text style={styles.paragraph}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pellentesque congue lorem, vel tincidunt
-        tortor placerat a. Proin ac diam quam. Aenean in sagittis magna, ut feugiat diam. Fusce a scelerisque neque,
-        sed accumsan metus.
+        Bu gizlilik sözleşmesi, Nereye Gitsem adlı mobil uygulamanın kullanıcılarından topladığı bilgilerin nasıl
+        kullanıldığını ve korunduğunu açıklamaktadır.
       </Text>
 
+      <Text style={styles.sectionTitle}>1. Toplanan Bilgiler</Text>
       <Text style={styles.paragraph}>
-        Nunc auctor tortor in dolor luctus, quis euismod urna tincidunt. Aenean arcu metus, bibendum at rhoncus at,
-        volutpat ut lacus. Morbi pellentesque malesuada eros semper ultrices. Vestibulum lobortis enim vel neque
-        auctor, a ultrices ex placerat. Mauris ut lacinia justo, sed suscipit tortor. Nam egestas nulla posuere neque
-        tincidunt porta.
+        Uygulamamız şu tür bilgileri toplayabilir:
+        {"\n"}- Cihaz bilgileri (model, işletim sistemi)
+        {"\n"}- Kullanıcı hareketleri (uygulama içi gezinme)
+        {"\n"}- Konum bilgisi (kullanıcı onay verirse)
+        {"\n"}- Geri bildirim ve destek mesajları
       </Text>
 
-      <Text style={styles.sectionTitle}>Terms & Conditions</Text>
-
-      <Text style={styles.listItem}>
-        1. Ut lacinia justo sit amet lorem sodales accumsan. Proin malesuada eleifend fermentum. Donec condimentum,
-        nunc at rhoncus faucibus, ex nisi laoreet ipsum, eu pharetra eros est vitae orci. Morbi quis rhoncus mi. Nullam
-        lacinia ornare accumsan. Duis laoreet, ex eget rutrum pharetra, lectus nisl posuere risus, vel facilisis nisi
-        tellus ac turpis.
+      <Text style={styles.sectionTitle}>2. Bilgilerin Kullanımı</Text>
+      <Text style={styles.paragraph}>
+        Toplanan veriler şu amaçlarla kullanılabilir:
+        {"\n"}- Hizmet kalitesini artırmak
+        {"\n"}- Hata ve sorunları tespit etmek
+        {"\n"}- Kullanıcı deneyimini iyileştirmek
+        {"\n"}- Gerekli durumlarda kullanıcı ile iletişime geçmek
       </Text>
 
-      <Text style={styles.listItem}>
-        2. Ut lacinia justo sit amet lorem sodales accumsan. Donec condimentum, nunc at rhoncus faucibus, ex nisi
-        laoreet ipsum, eu pharetra eros est vitae orci. Morbi quis rhoncus mi. Nullam lacinia ornare accumsan. Duis
-        laoreet, ex eget rutrum pharetra, lectus nisl posuere risus, vel facilisis nisi tellus.
+      <Text style={styles.sectionTitle}>3. Bilgi Paylaşımı</Text>
+      <Text style={styles.paragraph}>
+        Kullanıcı bilgileri üçüncü kişilerle paylaşılmaz, satılmaz veya kiralanmaz. Yasal zorunluluklar dışında bilgiler gizli tutulur.
       </Text>
 
-      <Text style={styles.listItem}>
-        3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pellentesque congue lorem, vel tincidunt
-        tortor placerat a. Proin ac diam quam. Aenean in sagittis magna, ut feugiat diam.
+      <Text style={styles.sectionTitle}>4. Güvenlik</Text>
+      <Text style={styles.paragraph}>
+        Kullanıcı bilgileri güvenli sunucularda saklanır ve yalnızca yetkili kişiler tarafından erişilebilir.
       </Text>
 
-      <Text style={styles.listItem}>
-        4. Nunc auctor tortor in dolor luctus, quis euismod urna tincidunt. Aenean arcu metus, bibendum at rhoncus at,
-        volutpat ut lacus. Morbi pellentesque malesuada eros semper ultrices. Vestibulum lobortis enim vel neque
-        auctor, a ultrices ex placerat. Mauris ut lacinia justo, sed suscipit tortor. Nam egestas nulla posuere neque.
+      <Text style={styles.sectionTitle}>5. Çocukların Gizliliği</Text>
+      <Text style={styles.paragraph}>
+        Uygulama 13 yaş altı çocuklara yönelik değildir. Bu yaş grubundan bilgi toplandığı tespit edilirse, bilgiler derhal silinir.
+      </Text>
+
+      <Text style={styles.sectionTitle}>6. Değişiklikler</Text>
+      <Text style={styles.paragraph}>
+        Bu sözleşme zaman zaman güncellenebilir. Değişiklikler uygulama üzerinden duyurulur.
+      </Text>
+
+      <Text style={styles.sectionTitle}>7. İletişim</Text>
+      <Text style={styles.paragraph}>
+        Her türlü soru ve geri bildirim için iletişim bölümü daha sonra güncellenecektir.
       </Text>
     </ScrollView>
   );
@@ -58,7 +73,16 @@ export default PrivacyPolicyScreen;
 const styles = StyleSheet.create({
   container: {
     padding: 24,
+    paddingTop: 48,
     backgroundColor: colors.white,
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    zIndex: 10,
+    padding: 8,
   },
   title: {
     fontSize: 22,
@@ -74,21 +98,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
   },
-  paragraph: {
-    fontSize: 14,
-    fontFamily: fonts.regular,
-    color: colors.black,
-    marginBottom: 16,
-    lineHeight: 22,
-  },
   sectionTitle: {
     fontSize: 18,
     fontFamily: fonts.bold,
     color: colors.ngcolor,
     marginTop: 24,
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  listItem: {
+  paragraph: {
     fontSize: 14,
     fontFamily: fonts.regular,
     color: colors.black,

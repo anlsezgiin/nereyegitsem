@@ -8,10 +8,15 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import colors from "../config/colors";
 import fonts from "../config/fonts";
 
+// api bağlandığında Çıkış Yap fonksiyonu eklenecek
+
 export default function ProfileScreen() {
+  const router = useRouter();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Başlık */}
@@ -25,21 +30,67 @@ export default function ProfileScreen() {
           }}
           style={styles.avatar}
         />
-        <Feather
-          name="edit-2"
-          size={16}
-          color="white"
-          style={styles.editIcon}
-        />
       </View>
       <Text style={styles.name}>John Doe</Text>
 
       {/* Menü */}
       <View style={styles.menu}>
-        <MenuItem icon="person" label="Profil" />
-        <MenuItem icon="heart" label="Favori Mekanlar" />
-        <MenuItem icon="lock-closed" label="Gizlilik Sözleşmesi" />
-        <MenuItem icon="settings" label="Ayarlar" />
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/EditProfileScreen")}
+        >
+          <Ionicons name="person" size={22} color={colors.ngcolor} />
+          <Text style={styles.menuLabel}>Profil</Text>
+          <Feather
+            name="chevron-right"
+            size={20}
+            color={colors.gray}
+            style={{ marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/favoriler")}
+        >
+          <Ionicons name="heart" size={22} color={colors.ngcolor} />
+          <Text style={styles.menuLabel}>Favori Mekanlar</Text>
+          <Feather
+            name="chevron-right"
+            size={20}
+            color={colors.gray}
+            style={{ marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/PrivacyPolicyScreen")}
+        >
+          <Ionicons name="lock-closed" size={22} color={colors.ngcolor} />
+          <Text style={styles.menuLabel}>Gizlilik Sözleşmesi</Text>
+          <Feather
+            name="chevron-right"
+            size={20}
+            color={colors.gray}
+            style={{ marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/SettingsScreen")}
+        >
+          <Ionicons name="settings" size={22} color={colors.ngcolor} />
+          <Text style={styles.menuLabel}>Ayarlar</Text>
+          <Feather
+            name="chevron-right"
+            size={20}
+            color={colors.gray}
+            style={{ marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
+
         <MenuItem icon="log-out" label="Çıkış Yap" />
       </View>
     </ScrollView>
@@ -69,13 +120,12 @@ const styles = StyleSheet.create({
   },
   headerText: {
     marginTop: 50,
-    fontSize: 24, // typography yerine direkt sayı
+    fontSize: 24,
     fontFamily: fonts.bold,
     textAlign: "center",
     color: colors.ngcolor,
     marginBottom: 20,
   },
-
   avatarWrapper: {
     alignSelf: "center",
     marginBottom: 10,

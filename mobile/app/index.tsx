@@ -113,7 +113,7 @@ import favoriler from "./favoriler";
 import home from "./home";
 import login from "./login";
 import PlaceInfo from "./PlaceInfo";
-import PlacesScreen from "./PlacesScreen";
+import PlacesScreen from "./PlacesScreen"; // anıl tarafından yapıldı
 import PasswordManagerScreen from "./PasswordManagerScreen";
 import PrivacyPolicyScreen from "./PrivacyPolicyScreen";
 import ProfileScreen from "./ProfileScreen";
@@ -121,5 +121,4 @@ import SetPassword from "./SetPasswordScreen";
 import SettingsScreen from "./SettingsScreen";
 import signup from "./signup";
 
-
-export default PlacesScreen;
+export default favoriler;

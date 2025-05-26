@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
 
 export default function SetPassword() {
   const [password, setPassword] = useState("");
@@ -7,39 +14,88 @@ export default function SetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // update edilmesi gereken iyileştirmeler var.
+  // Bazı route sorunlarımız var ve tasarım değiştirilecek
+
+  // Buton tıklama işlemi
+  const handleConfirmPassword = () => {
+    if (!password || !confirmPassword) {
+      Alert.alert("Hata", "Lütfen tüm alanları doldurun.");
+      return;
+    }
+
+    if (password.length < 8) {
+      Alert.alert("Hata", "Şifre en az 8 karakter olmalıdır.");
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      Alert.alert("Hata", "Şifre en az bir büyük harf içermelidir.");
+      return;
+    }
+
+    if (!/[a-z]/.test(password)) {
+      Alert.alert("Hata", "Şifre en az bir küçük harf içermelidir.");
+      return;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      Alert.alert("Hata", "Şifre en az bir rakam içermelidir.");
+      return;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      Alert.alert("Hata", "Şifre en az bir sembol içermelidir.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Hata", "Şifreler uyuşmuyor.");
+      return;
+    }
+
+    Alert.alert("Başarılı", "Şifre başarıyla onaylandı.");
+    // Burada istersen şifreyi kaydetme ya da başka işlem ekleyebilirsin
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Şifre</Text>
       <Text style={styles.subtitle}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Şifreniz en az 8 karakter olmalı; büyük-küçük harf, rakam ve sembol
+        içermelidir. Güvenliğiniz için şifrenizi kimseyle paylaşmayınız.
       </Text>
 
       <Text style={styles.label}>Şifre</Text>
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="****"
+          placeholder="**"
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
           style={styles.input}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon} />
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.eyeIcon}
+        />
       </View>
 
       <Text style={styles.label}>Şifreyi Onayla</Text>
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="****"
+          placeholder="**"
           secureTextEntry={!showConfirm}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           style={styles.input}
         />
-        <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)} style={styles.eyeIcon} />
+        <TouchableOpacity
+          onPress={() => setShowConfirm(!showConfirm)}
+          style={styles.eyeIcon}
+        />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleConfirmPassword}>
         <Text style={styles.buttonText}>Şifreyi Onayla</Text>
       </TouchableOpacity>
     </View>
