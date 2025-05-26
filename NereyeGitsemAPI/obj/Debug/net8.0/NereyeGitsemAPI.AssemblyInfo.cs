@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NereyeGitsemAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+becc510edd877dc3a14be019cbcdb6cf5913a4cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c2b6d6a205dc31e9152bdf50d794abb40925f51")]
 [assembly: System.Reflection.AssemblyProductAttribute("NereyeGitsemAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NereyeGitsemAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -13,6 +13,8 @@ export interface Place {
 
 interface PlaceCardProps {
   place: Place;
+  onToggleFavorite?: () => void;
+  onPressDetail?: () => void;
 }
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
