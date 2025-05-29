@@ -44,6 +44,17 @@ export default function Home() {
     router.push("/PlacesScreen");
   };
 
+  const resetFilters = () => {
+    setSelectedPurpose(null);
+    setCustomPurpose("");
+    setSelectedPrice(null);
+    setCustomPrice("");
+    setSelectedLocation(null);
+    setCustomLocation("");
+    setSelectedPlaceType(null);
+    setCustomPlaceType("");
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header */}
@@ -79,21 +90,13 @@ export default function Home() {
         {purposes.map((item) => (
           <TouchableOpacity
             key={item}
-            style={[
-              styles.optionButton,
-              selectedPurpose === item && styles.optionSelected,
-            ]}
+            style={[styles.optionButton, selectedPurpose === item && styles.optionSelected]}
             onPress={() => {
               setSelectedPurpose(item);
               setCustomPurpose(item);
             }}
           >
-            <Text
-              style={[
-                styles.optionText,
-                selectedPurpose === item && styles.optionTextSelected,
-              ]}
-            >
+            <Text style={[styles.optionText, selectedPurpose === item && styles.optionTextSelected]}>
               {item}
             </Text>
           </TouchableOpacity>
@@ -112,21 +115,13 @@ export default function Home() {
         {priceRanges.map((item) => (
           <TouchableOpacity
             key={item}
-            style={[
-              styles.optionButton,
-              selectedPrice === item && styles.optionSelected,
-            ]}
+            style={[styles.optionButton, selectedPrice === item && styles.optionSelected]}
             onPress={() => {
               setSelectedPrice(item);
               setCustomPrice(item);
             }}
           >
-            <Text
-              style={[
-                styles.optionText,
-                selectedPrice === item && styles.optionTextSelected,
-              ]}
-            >
+            <Text style={[styles.optionText, selectedPrice === item && styles.optionTextSelected]}>
               {item}
             </Text>
           </TouchableOpacity>
@@ -145,21 +140,13 @@ export default function Home() {
         {locations.map((item) => (
           <TouchableOpacity
             key={item}
-            style={[
-              styles.optionButton,
-              selectedLocation === item && styles.optionSelected,
-            ]}
+            style={[styles.optionButton, selectedLocation === item && styles.optionSelected]}
             onPress={() => {
               setSelectedLocation(item);
               setCustomLocation(item);
             }}
           >
-            <Text
-              style={[
-                styles.optionText,
-                selectedLocation === item && styles.optionTextSelected,
-              ]}
-            >
+            <Text style={[styles.optionText, selectedLocation === item && styles.optionTextSelected]}>
               {item}
             </Text>
           </TouchableOpacity>
@@ -178,21 +165,13 @@ export default function Home() {
         {placeTypes.map((item) => (
           <TouchableOpacity
             key={item}
-            style={[
-              styles.optionButton,
-              selectedPlaceType === item && styles.optionSelected,
-            ]}
+            style={[styles.optionButton, selectedPlaceType === item && styles.optionSelected]}
             onPress={() => {
               setSelectedPlaceType(item);
               setCustomPlaceType(item);
             }}
           >
-            <Text
-              style={[
-                styles.optionText,
-                selectedPlaceType === item && styles.optionTextSelected,
-              ]}
-            >
+            <Text style={[styles.optionText, selectedPlaceType === item && styles.optionTextSelected]}>
               {item}
             </Text>
           </TouchableOpacity>
@@ -205,8 +184,12 @@ export default function Home() {
         style={styles.input}
       />
 
-      {/* Submit */}
-      <View style={{ alignItems: "center", marginTop: 20 }}>
+      {/* Butonlar */}
+      <View style={styles.buttonRow}>
+        <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
+          <Text style={styles.resetText}>Sıfırla</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitText}>Mekan Öner</Text>
         </TouchableOpacity>
@@ -299,10 +282,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
   },
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
+    marginTop: 20,
+  },
+  resetButton: {
+    backgroundColor: "#D9534F",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    alignItems: "center",
+    width: 120,
+  },
+  resetText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "400",
+  },
   submitButton: {
     backgroundColor: "#4D55CC",
     paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     borderRadius: 30,
     alignItems: "center",
     width: 160,
@@ -310,6 +312,6 @@ const styles = StyleSheet.create({
   submitText: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "300",
+    fontWeight: "400",
   },
 });
