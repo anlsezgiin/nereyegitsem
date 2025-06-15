@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,21 +8,48 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 import colors from "../config/colors";
 import fonts from "../config/fonts";
 
-// Mock datalı, güncellenecek
+const API_BASE = "http://82.153.241.184:5000/User";
+const USER_ID = 6; // Şimdilik sabit
+
 export default function EditProfileScreen() {
-  const [fullName, setFullName] = useState("John Doe");
-  const [phone, setPhone] = useState("+123 567 89000");
-  const [email, setEmail] = useState("johndoe@example.com");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [avatarUri, setAvatarUri] = useState("https://randomuser.me/api/portraits/men/1.jpg");
+  const [loading, setLoading] = useState(true);
 
-  // Doğum tarihi formatlama
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await axios.get(`${API_BASE}/getById/${USER_ID}`);
+      const data = response.data;
+
+      const fullNameCombined = `${data.name} ${data.surname}`;
+      const formattedBirth = formatBirthDateToInput(data.birthday);
+
+      setFullName(fullNameCombined);
+      setPhone(data.phone);
+      setEmail(data.email);
+      setBirthDate(formattedBirth);
+    } catch (error) {
+      Alert.alert("Hata", "Kullanıcı bilgileri getirilemedi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleBirthDateChange = (text: string) => {
     let formatted = text.replace(/[^\d]/g, "");
     if (formatted.length > 2 && formatted.length <= 4) {
@@ -33,13 +60,24 @@ export default function EditProfileScreen() {
     setBirthDate(formatted);
   };
 
-  // Telefon numarası filtreleyici
+  const formatBirthDateForApi = (date: string) => {
+    const parts = date.split("/");
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return date;
+  };
+
+  const formatBirthDateToInput = (date: string) => {
+    const [year, month, day] = date.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   const handlePhoneChange = (text: string) => {
     const filtered = text.replace(/[^\d+]/g, "");
     setPhone(filtered);
   };
 
-  // Profil fotoğrafı seçici
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -59,26 +97,47 @@ export default function EditProfileScreen() {
     }
   };
 
-  // Geçici fake API GÜNCELLENECEK
-  const fakeUpdateProfile = async () => {
-    return new Promise((resolve) => setTimeout(() => resolve({ status: 200 }), 200));
-  };
-
-  // Profili güncelleme GÜNCELLENECEK
   const handleSubmit = async () => {
     if (!fullName || !phone || !email || !birthDate) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurunuz.");
       return;
     }
 
-    const response: any = await fakeUpdateProfile();
+    try {
+      const [name, surname] = fullName.split(" ");
+      const payload = {
+        id: USER_ID,
+        name,
+        surname: surname || "",
+        email,
+        phone,
+        birthday: formatBirthDateForApi(birthDate),
+        password: "string",
+        newPassword: "string",
+        createdDate: new Date().toISOString(),
+        enabled: true,
+      };
 
-    if (response.status === 200) {
-      Alert.alert("Başarılı", "Profil bilgileri başarıyla güncellendi!");
-    } else {
-      Alert.alert("Hata", "Bir şeyler ters gitti.");
+      const response = await axios.put(`${API_BASE}/update/${USER_ID}`, payload);
+
+      if (response.status === 200) {
+        Alert.alert("Başarılı", "Profil bilgileri başarıyla güncellendi!");
+      } else {
+        Alert.alert("Hata", "Profil güncellenemedi.");
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      Alert.alert("Hata", "Sunucuya bağlanırken bir hata oluştu.");
     }
   };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={colors.ngcolor} />
+      </View>
+    );
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -93,11 +152,7 @@ export default function EditProfileScreen() {
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>İsim Soyisim</Text>
-        <TextInput
-          style={styles.input}
-          value={fullName}
-          onChangeText={setFullName}
-        />
+        <TextInput style={styles.input} value={fullName} onChangeText={setFullName} />
       </View>
 
       <View style={styles.inputGroup}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,23 +6,58 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import colors from "../config/colors";
 import fonts from "../config/fonts";
 
-// api bağlandığında Çıkış Yap fonksiyonu eklenecek
+const USER_ID = 6;
+const API_URL = `http://82.153.241.184:5000/User/getById/${USER_ID}`;
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [fullName, setFullName] = useState("Yükleniyor...");
+
+  useEffect(() => {
+    fetchUserName();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const checkAuth = async () => {
+        const token = await AsyncStorage.getItem("userToken");
+        if (!token) {
+          router.replace("/login");
+        }
+      };
+      checkAuth();
+    }, [])
+  );
+
+  const fetchUserName = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      const { name, surname } = response.data;
+      setFullName(`${name} ${surname}`);
+    } catch (error) {
+      Alert.alert("Hata", "Kullanıcı bilgisi alınamadı.");
+      setFullName("John Doe");
+    }
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("userToken");
+    router.replace("/login");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Başlık */}
       <Text style={styles.headerText}>Profilim</Text>
 
-      {/* Avatar ve isim */}
       <View style={styles.avatarWrapper}>
         <Image
           source={{
@@ -31,9 +66,8 @@ export default function ProfileScreen() {
           style={styles.avatar}
         />
       </View>
-      <Text style={styles.name}>John Doe</Text>
+      <Text style={styles.name}>{fullName}</Text>
 
-      {/* Menü */}
       <View style={styles.menu}>
         <TouchableOpacity
           style={styles.menuItem}
@@ -91,24 +125,18 @@ export default function ProfileScreen() {
           />
         </TouchableOpacity>
 
-        <MenuItem icon="log-out" label="Çıkış Yap" />
+        <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+          <Ionicons name="log-out" size={22} color={colors.ngcolor} />
+          <Text style={styles.menuLabel}>Çıkış Yap</Text>
+          <Feather
+            name="chevron-right"
+            size={20}
+            color={colors.gray}
+            style={{ marginLeft: "auto" }}
+          />
+        </TouchableOpacity>
       </View>
     </ScrollView>
-  );
-}
-
-function MenuItem({ icon, label }: { icon: any; label: string }) {
-  return (
-    <TouchableOpacity style={styles.menuItem}>
-      <Ionicons name={icon} size={22} color={colors.ngcolor} />
-      <Text style={styles.menuLabel}>{label}</Text>
-      <Feather
-        name="chevron-right"
-        size={20}
-        color={colors.gray}
-        style={{ marginLeft: "auto" }}
-      />
-    </TouchableOpacity>
   );
 }
 
@@ -136,14 +164,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     backgroundColor: colors.gray,
-  },
-  editIcon: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    backgroundColor: colors.ngcolor,
-    borderRadius: 10,
-    padding: 4,
   },
   name: {
     fontSize: 18,

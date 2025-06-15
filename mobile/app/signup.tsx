@@ -8,9 +8,11 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import axios from 'axios';
 
 export default function Signup() {
   const router = useRouter();
@@ -38,101 +40,123 @@ export default function Signup() {
     setPhone(filtered);
   };
 
-  const fakeSignupApi = async () => {
-    return new Promise((resolve) => setTimeout(() => resolve({ status: 200 }), 300));
+  const handleSubmit = async () => {
+    if (!fullName || !password || !email || !phone || !birthDate) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+      return;
+    }
+
+    const nameParts = fullName.trim().split(' ');
+    const name = nameParts[0];
+    const surname = nameParts.slice(1).join(' ') || '';
+
+    const formattedBirthDate = (() => {
+      const parts = birthDate.split('/');
+      if (parts.length !== 3) return '';
+      const [day, month, year] = parts;
+      return `${year}-${month}-${day}`;
+    })();
+
+    const payload = {
+      name,
+      surname,
+      email,
+      phone,
+      birthday: formattedBirthDate,
+      newPassword: password,
+      enabled: true,
+    };
+
+    try {
+      setLoading(true);
+      const apiUrl = process.env.EXPO_PUBLIC_USER_ADD;
+      const response = await axios.post(apiUrl!, payload);
+      setLoading(false);
+
+      if (response.status === 200) {
+        Alert.alert(
+          'Kayıt Başarılı!',
+          'Giriş yapabilirsiniz.',
+          [
+            {
+              text: 'Giriş Yap',
+              onPress: () => router.replace('/login'),
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Alert.alert('Kayıt Başarısız', 'Sunucudan beklenmeyen bir yanıt alındı.');
+      }
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Hata', 'Kayıt işlemi sırasında bir hata oluştu.');
+    }
   };
 
-  const handleSubmit = async () => {
-  if (!fullName || !password || !email || !phone || !birthDate) {
-    Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
-    return;
-  }
-
-  setLoading(true);
-  const response: any = await fakeSignupApi();
-  setLoading(false);
-
-  if (response.status === 200) {
-    Alert.alert(
-      'Kayıt Başarılı!',
-      'Giriş yapabilirsiniz.',
-      [
-        {
-          text: 'Giriş Yap',
-          onPress: () => router.replace('/login'),
-        },
-      ],
-      { cancelable: false }
-    );
-  } else {
-    Alert.alert('Kayıt Başarısız', 'Bir hata oluştu.');
-  }
-};
-
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={20} color="#4D55CC" />
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="chevron-back" size={20} color="#4D55CC" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Yeni Hesap</Text>
+          <View style={{ width: 20 }} />
+        </View>
+
+        <Label text="İsim Soyisim" />
+        <Input placeholder="Adınız Soyadınız" value={fullName} onChangeText={setFullName} />
+
+        <Label text="Şifre" />
+        <Input
+          placeholder="********"
+          value={password}
+          onChangeText={setPassword}
+          secure={secureText}
+          icon
+          onIconPress={() => setSecureText(!secureText)}
+        />
+
+        <Label text="Email" />
+        <Input placeholder="example@example.com" value={email} onChangeText={setEmail} />
+
+        <Label text="Telefon Numarası" />
+        <Input placeholder="+90 555 555 55 55" value={phone} onChangeText={handlePhoneChange} />
+
+        <Label text="Doğum Tarihi" />
+        <Input
+          placeholder="GG/AA/YYYY"
+          value={birthDate}
+          onChangeText={handleBirthDateChange}
+        />
+
+        <TouchableOpacity onPress={() => router.push('/PrivacyPolicyScreen')}>
+          <Text style={styles.termsText}>
+            Devam ederek{' '}
+            <Text style={styles.link}>Kullanım Şartlarını ve Gizlilik Politikası’nı</Text> kabul etmiş olursunuz.
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Yeni Hesap</Text>
-        <View style={{ width: 20 }} />
-      </View>
 
-      <Label text="İsim Soyisim" />
-      <Input placeholder="Adınız Soyadınız" value={fullName} onChangeText={setFullName} />
+        <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Kayıt Ol</Text>
+          )}
+        </TouchableOpacity>
 
-      <Label text="Şifre" />
-      <Input
-        placeholder="********"
-        value={password}
-        onChangeText={setPassword}
-        secure={secureText}
-        icon
-        onIconPress={() => setSecureText(!secureText)}
-      />
-
-      <Label text="Email" />
-      <Input placeholder="example@example.com" value={email} onChangeText={setEmail} />
-
-      <Label text="Telefon Numarası" />
-      <Input placeholder="+90 555 555 55 55" value={phone} onChangeText={handlePhoneChange} />
-
-      <Label text="Doğum Tarihi" />
-      <Input
-        placeholder="GG/AA/YYYY"
-        value={birthDate}
-        onChangeText={handleBirthDateChange}
-      />
-
-      <TouchableOpacity onPress={() => router.push('/PrivacyPolicyScreen')}>
-        <Text style={styles.termsText}>
-          Devam ederek{' '}
-          <Text style={styles.link}>Kullanım Şartlarını ve Gizlilik Politikası’nı</Text> kabul etmiş olursunuz.
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Kayıt Ol</Text>
-        )}
-      </TouchableOpacity>
-
-      <Text style={styles.divider}>veya şununla devam et</Text>
-
-      <View style={styles.googleIcon}>
-        <Ionicons name="logo-google" size={40} color="#ccc" />
-      </View>
-
-      <TouchableOpacity onPress={() => router.push('/login')}>
-        <Text style={styles.loginText}>
-          Zaten hesabın var mı? <Text style={styles.link}>Giriş Yap</Text>
-        </Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity onPress={() => router.push('/login')}>
+          <Text style={styles.loginText}>
+            Zaten hesabın var mı? <Text style={styles.link}>Giriş Yap</Text>
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -179,6 +203,14 @@ const Input: React.FC<InputProps> = ({
 );
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     padding: 24,
     backgroundColor: '#fff',
@@ -250,19 +282,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'League Spartan',
   },
-  divider: {
-    textAlign: 'center',
-    marginVertical: 12,
-    fontFamily: 'League Spartan',
-    fontSize: 12,
-  },
-  googleIcon: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
   loginText: {
     textAlign: 'center',
     fontSize: 12,
     fontFamily: 'League Spartan',
+    marginTop: 12,
   },
 });

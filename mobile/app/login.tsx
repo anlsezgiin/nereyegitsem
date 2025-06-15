@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import {
   View,
   Text,
@@ -11,7 +10,11 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
 
 const LoginScreen = () => {
   const [secureText, setSecureText] = useState(true);
@@ -20,38 +23,46 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // MOCK API GÜNCELLENECEK!!!
-  const fakeLoginApi = async () => {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve({ status: 200 }), 300)
-    );
-  };
+const handleLogin = async () => {
+  if (!textInput1 || !password) {
+    Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+    return;
+  }
 
-  const handleLogin = async () => {
-    if (!textInput1 || !password) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
-      return;
-    }
-
+  try {
     setLoading(true);
+    const response = await axios.post('http://82.153.241.184:5000/User/signin', {
+      email: textInput1, // sadece email, emailOrPhone değil
+      password: password,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+      },
+    });
 
-    const response: any = await fakeLoginApi();
-    setLoading(false);
-
-    if (response.status === 200) {
+    if (response.status === 200 && response.data?.token) {
+      await AsyncStorage.setItem('userToken', response.data.token);
       router.push('/home');
     } else {
       Alert.alert('Giriş Başarısız', 'Lütfen bilgilerinizi kontrol edin.');
     }
-  };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('API Hatası:', error.response?.data);
+      Alert.alert('Giriş Hatası', JSON.stringify(error.response?.data, null, 2));
+    } else {
+      console.log(error);
+      Alert.alert('Hata', 'Beklenmeyen bir hata oluştu.');
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleGoogleLogin = () => {
-    console.log('Google login tıklandı');
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.replace('/')}>
           <Ionicons name="chevron-back" size={24} color="#4D55CC" />
@@ -62,7 +73,7 @@ const LoginScreen = () => {
 
       <Text style={styles.welcome}>Hoşgeldiniz</Text>
       <Text style={styles.subText}>
-        Email veya Google ile giriş yapabilirsiniz!
+        Email veya Telefon numarası ile giriş yapabilirsiniz!
       </Text>
 
       <Text style={styles.label}>Email veya Telefon Numarası</Text>
@@ -108,18 +119,6 @@ const LoginScreen = () => {
           ) : (
             <Text style={styles.loginText}>Giriş Yap</Text>
           )}
-        </TouchableOpacity>
-
-        <Text style={styles.or}>veya şununla devam et</Text>
-
-        <TouchableOpacity onPress={handleGoogleLogin}>
-          <Image
-            source={{
-              uri: 'https://storage.googleapis.com/tagjs-prod.appspot.com/v1/tpcoy5b9YQ/mmt9q95w_expires_30_days.png',
-            }}
-            resizeMode="stretch"
-            style={styles.googleIcon}
-          />
         </TouchableOpacity>
 
         <View style={styles.registerRow}>
@@ -229,17 +228,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  or: {
-    color: '#070707',
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  googleIcon: {
-    width: 40,
-    height: 40,
-    marginBottom: 16,
   },
   registerRow: {
     flexDirection: 'row',

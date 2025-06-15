@@ -1,18 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ScrollView,
+  Image,
   TextInput,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
   const router = useRouter();
+
+  const [userName, setUserName] = useState("Kullanıcı");
+  const [loading, setLoading] = useState(false);
 
   const [selectedPurpose, setSelectedPurpose] = useState<string | null>(null);
   const [customPurpose, setCustomPurpose] = useState("");
@@ -31,18 +38,76 @@ export default function Home() {
   const locations = ["Beşiktaş", "Taksim", "Levent"];
   const placeTypes = ["Cafe", "Bar", "Fast-Food"];
 
-  const handleSubmit = () => {
-    const filters = {
-      purpose: selectedPurpose || customPurpose,
-      price: selectedPrice || customPrice,
-      location: selectedLocation || customLocation,
-      type: selectedPlaceType || customPlaceType,
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("http://82.153.241.184:5000/User/getById/6");
+        const user = response.data;
+        if (user?.name) {
+          setUserName(user.name);
+        }
+      } catch (error) {
+        console.log("Kullanıcı bilgisi alınamadı:", error);
+      }
     };
 
-    // fetch('/api/places', { method: 'POST', body: JSON.stringify(filters) })
+    fetchUser();
+  }, []);
 
-    router.push("/PlacesScreen");
+  const handleSubmit = async () => {
+  const filters = {
+    purpose: selectedPurpose || customPurpose,
+    price: selectedPrice || customPrice,
+    location: selectedLocation || customLocation,
+    type: selectedPlaceType || customPlaceType,
   };
+
+  try {
+    setLoading(true);
+
+    const token = await AsyncStorage.getItem("userToken");
+
+    const prompt = `"Lütfen tam olarak 3 adet gerçek mekan önerisi ver, lokasyon: ${filters.location}, amaç: ${filters.purpose}, fiyat aralığı: ${filters.price}, mekan türü: ${filters.type}.
+Yalnızca Google Haritalar'da bulunabilen gerçek mekanları öner. Uydurma isimler kullanma.
+Sadece aşağıdaki gibi bir JSON dizi formatında yanıt ver:
+    [
+      {
+        "name": "Example Name",
+        "category": "Cafe",
+        "image": "https://example.com/img.jpg",
+        "infoIcon": "Wi-Fi"
+      }
+    ] — Açıklama, markdown, fazladan yazı ekleme — sadece JSON verisi gönder.`;
+
+    const aiResponse = await axios.post(
+      "http://82.153.241.184:5000/AI/ask",
+      {
+        userId: 6,
+        prompt: prompt,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let raw = aiResponse.data.response;
+    const cleaned = raw
+      .replace(/```json/, "")
+      .replace(/```/, "")
+      .trim();
+
+    const parsed = JSON.parse(cleaned);
+    router.push({ pathname: "/PlacesScreen", params: { data: JSON.stringify(parsed) } });
+  } catch (err) {
+    console.log("AI ERROR:", err);
+    Alert.alert("Hata", "Mekan önerileri alınamadı.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const resetFilters = () => {
     setSelectedPurpose(null);
@@ -57,7 +122,6 @@ export default function Home() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => router.push("/ProfileScreen")}
@@ -69,7 +133,7 @@ export default function Home() {
           />
           <View style={{ marginLeft: 8 }}>
             <Text style={styles.greeting}>Hoşgeldiniz!</Text>
-            <Text style={styles.username}>John Doe</Text>
+            <Text style={styles.username}>{userName}</Text>
           </View>
         </TouchableOpacity>
 
@@ -78,7 +142,6 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      {/* Başlık */}
       <Text style={styles.heading}>Nereye Gitsem?</Text>
       <Text style={styles.subHeading}>
         Nereye Gideceğini Düşünme{"\n"}Ne İstediğini Seç Biz Senin İçin Buluruz!
@@ -190,8 +253,12 @@ export default function Home() {
           <Text style={styles.resetText}>Sıfırla</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitText}>Mekan Öner</Text>
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.submitText}>Mekan Öner</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>
