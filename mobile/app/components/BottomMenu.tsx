@@ -78,8 +78,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     width: windowWidth * 0.9,
     alignSelf: 'center',
-
-    // Modern gölge
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,

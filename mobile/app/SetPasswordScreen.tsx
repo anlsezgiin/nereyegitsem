@@ -14,9 +14,6 @@ export default function SetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Bazı route sorunlarımız var ve tasarım değiştirilecek
-
-  // Buton tıklama işlemi
   const handleConfirmPassword = () => {
     if (!password || !confirmPassword) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun.");
@@ -54,7 +51,6 @@ export default function SetPassword() {
     }
 
     Alert.alert("Başarılı", "Şifre başarıyla onaylandı.");
-    // Burada istersen şifreyi kaydetme ya da başka işlem ekleyebilirsin
   };
 
   return (

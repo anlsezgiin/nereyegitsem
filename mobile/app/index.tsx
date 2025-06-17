@@ -1,8 +1,3 @@
-// app/index.tsx
-
-//TODO:
-
-// LOGONUN BÜYÜKLÜĞÜ OTURMUYOR GÜNCELLENECEK BEN BECEREMEDİM - Anıl Sezgin
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -107,6 +102,8 @@ const styles = StyleSheet.create({
     fontWeight: 500
   },
 });
+
+// FOR UNIT AND UI TESTS USE THIS SECTION
 
 // import EditProfileScreen from "./EditProfileScreen";
 // import favoriler from "./favoriler";

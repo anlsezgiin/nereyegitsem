@@ -43,7 +43,7 @@ export default function Home() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("http://82.153.241.184:5000/User/getById/6");
+        const response = await axios.get("http://82.153.241.184:5000/User/getById/6"); // for mock data its ok but it should be in .env
         const user = response.data;
         if (user?.name) setUserName(user.name);
       } catch (error) {

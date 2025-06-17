@@ -17,7 +17,7 @@ import colors from "../config/colors";
 import fonts from "../config/fonts";
 
 const API_BASE = "http://82.153.241.184:5000/User";
-const USER_ID = 6; // Şimdilik sabit
+const USER_ID = 6; // for mock data its ok but it should be on .env
 
 export default function EditProfileScreen() {
   const [fullName, setFullName] = useState("");

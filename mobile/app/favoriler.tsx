@@ -51,7 +51,7 @@ export default function Favoriler() {
         <View style={{ width: 20 }} /> {/* Spacer */}
       </View>
 
-      {/* Arama */}
+      {/* Search */}
       <TextInput
         placeholder="Favori mekan ara..."
         value={searchTerm}
@@ -59,7 +59,7 @@ export default function Favoriler() {
         style={styles.searchInput}
       />
 
-      {/* Liste */}
+      {/* List */}
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.name}
