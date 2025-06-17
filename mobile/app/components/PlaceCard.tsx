@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "~/config/colors";
 
 export interface Place {
@@ -9,24 +10,50 @@ export interface Place {
   category: string;
   image: string;
   infoIcon: string;
+  address?: string;
+  description?: string;
 }
 
 interface PlaceCardProps {
   place: Place;
-  onToggleFavorite?: () => void;
-  onPressDetail?: () => void;
 }
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const router = useRouter();
 
-  const handleFavorite = () => {
+  useEffect(() => {
+    checkIfFavorited();
+  }, []);
+
+  const checkIfFavorited = async () => {
+    const stored = await AsyncStorage.getItem("favorites");
+    if (stored) {
+      const favs = JSON.parse(stored);
+      const exists = favs.find((item: Place) => item.name === place.name);
+      setIsFavorited(!!exists);
+    }
+  };
+
+  const toggleFavorite = async () => {
+    const stored = await AsyncStorage.getItem("favorites");
+    let favorites: Place[] = stored ? JSON.parse(stored) : [];
+
+    if (isFavorited) {
+      favorites = favorites.filter((item) => item.name !== place.name);
+    } else {
+      favorites.push(place);
+    }
+
+    await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
     setIsFavorited(!isFavorited);
   };
 
   const handleCardPress = () => {
-    router.push('/PlaceInfo');
+    router.push({
+      pathname: "/PlaceInfo",
+      params: { ...place },
+    });
   };
 
   return (
@@ -37,11 +64,9 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
           <View>
             <Text style={styles.name}>{place.name}</Text>
             <Text style={styles.category}>{place.category}</Text>
+            {place.infoIcon ? <Text style={styles.infoIcon}>{place.infoIcon}</Text> : null}
           </View>
-          <TouchableOpacity 
-            onPress={handleFavorite}
-            style={styles.favoriteButton} 
-          >
+          <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteButton}>
             <Ionicons
               name={isFavorited ? "heart" : "heart-outline"}
               size={24}
@@ -75,7 +100,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   textContainer: {
     flexDirection: "row",
@@ -92,8 +117,13 @@ const styles = StyleSheet.create({
   category: {
     color: "#000000",
     fontSize: 13,
-    marginBottom: 14,
+    marginBottom: 4,
     marginLeft: 1,
+  },
+  infoIcon: {
+    color: "#4D55CC",
+    fontSize: 12,
+    marginBottom: 10,
   },
   favoriteButton: {
     padding: 5,
